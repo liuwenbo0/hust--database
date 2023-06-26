@@ -1,0 +1,39 @@
+8.1
+use finance1;
+drop trigger if exists before_property_inserted;
+-- 请在适当的地方补充代码，完成任务要求：
+delimiter $$
+CREATE TRIGGER before_property_inserted BEFORE INSERT ON property
+FOR EACH ROW 
+BEGIN
+if NEW.pro_type=1 and NEW.pro_pif_id not in (select p_id from finances_product)
+then set @msg = CONCAT('finances product #', NEW.pro_pif_id, ' not found!');
+SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @msg;
+end if;
+
+if NEW.pro_type=2 and NEW.pro_pif_id not in (select i_id from insurance)
+then set @msg = CONCAT('insurance #', NEW.pro_pif_id, ' not found!');
+SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @msg;
+end if;
+
+if NEW.pro_type=3 and NEW.pro_pif_id not in (select f_id from fund)
+then set @msg = CONCAT('fund #', NEW.pro_pif_id, ' not found!');
+SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @msg;
+end if;
+
+if NEW.pro_type > 3 or NEW.pro_type < 1
+then set @msg = CONCAT('type ', NEW.pro_type, ' is illegal!');
+SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @msg;
+end if;
+
+END$$
+delimiter ;
+
+
+
+
+
+
+
+
+

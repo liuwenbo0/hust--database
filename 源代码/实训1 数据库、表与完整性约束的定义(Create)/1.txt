@@ -1,0 +1,61 @@
+1.1
+-- 本关我们强烈建议你点击本编辑窗口上方的“命令行”菜单打开Linux的命令行，
+-- 并通过mysql命令行工具连接并登录到服务器，
+-- 然后在mysql的命令行工具里通过恰当的语句完成任务。
+-- 在以后的关卡中你可以通过命令行调试或测试语句，再将正确的语句粘贴到文件编辑窗口。
+
+-- 你也可以选择在以下空白行填写完成目标任务的SQL语句：
+-- 创建2022年北京冬奥会信息系统数据库
+
+create database beijing2022
+
+-- end
+
+1.2
+# 请在以下适当的空白处填写SQL语句，完成任务书的要求。空白行可通过回车换行添加。 
+
+create database IF NOT EXISTS TestDb ;
+use TestDb;
+create table t_emp(id int primary key, name varchar(32), deptId int, salary floar);
+
+
+
+/* *********** 结束 ************* */
+
+1.3
+# 请在以下空白处填写完成任务的语句，空白行可通过回车换行添加。
+# 你也可以在命令行窗口完成任务，不过，在命令行键入的语句不会被保存。
+
+
+create database MyDb;
+use MyDb;
+create table staff(staffNo int primary key, staffName varchar(32), gender char(1), dob date, salary numeric(8,2) ,deptNo int, constraint FK_staff_deptNo foreign key(deptNo) references dept(deptNo));
+# 结束 
+
+1.4
+# 请在以下空白处填写完成任务的语句，空白行可通过回车换行添加。
+# 你也可以在命令行窗口完成任务，不过，在命令行键入的语句不会被保存。
+
+use MyDb;
+
+create table products(pid char(10) primary key, name varchar(32), brand char(10), price int, constraint CK_products_brand check(brand in ('A', 'B')), constraint CK_products_price check(price>0));
+# 结束 
+
+1.5
+# 请在以下空白处填写完成任务的语句，空白行可通过回车换行添加。
+# 你也可以在命令行窗口完成任务，不过，在命令行键入的语句不会被保存。
+
+use MyDb;
+
+create table hr(id char(10) primary key, name varchar(32) not null, mz char(16) default '汉族');
+
+# 结束 
+
+1.6
+# 请在以下空白处填写完成任务的语句，空白行可通过回车换行添加。
+# 你也可以在命令行窗口完成任务，不过，在命令行键入的语句不会被保存。
+
+use MyDb;
+
+create table s(sno char(10) primary key, name varchar(32) not null, ID char(18)  unique);
+# 结束 

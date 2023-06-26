@@ -1,0 +1,118 @@
+4.1
+ -- 1) 查询销售总额前三的理财产品
+--   请用一条SQL语句实现该查询：
+
+SELECT
+  tmp.pyear,
+	RANK() OVER(PARTITION BY tmp.pyear ORDER BY tmp.sumamount DESC) AS "rk",
+	finances_product.p_id,
+	tmp.sumamount
+FROM
+	finances_product
+	INNER JOIN
+	(
+		SELECT
+			SUM(property.pro_quantity*finances_product.p_amount) AS sumamount, 
+			finances_product.p_id, 
+			YEAR(property.pro_purchase_time) AS pyear
+		FROM
+			finances_product
+			INNER JOIN
+			property
+			ON 
+				finances_product.p_id = property.pro_pif_id
+		WHERE
+			(
+				property.pro_purchase_time LIKE '2010%' OR
+				property.pro_purchase_time LIKE '2011%'
+			) AND
+			property.pro_type = 1
+		GROUP BY
+			finances_product.p_id, 
+			property.pro_purchase_time
+	) AS tmp
+	ON 
+		finances_product.p_id = tmp.p_id
+ORDER BY
+  pyear ASC,
+	tmp.sumamount DESC
+LIMIT
+  6;
+
+
+/*  end  of  your code  */
+
+4.2
+跳过
+
+4.3
+   -- 3) 查询购买了所有畅销理财产品的客户
+--   请用一条SQL语句实现该查询：
+
+SELECT DISTINCT
+	client.c_id AS pro_c_id
+FROM
+	client
+WHERE
+	NOT EXISTS(
+	SELECT
+			finances_product.p_id , 
+			COUNT(property.pro_c_id) AS num_of_client
+		FROM
+			finances_product
+			INNER JOIN
+			property
+			ON 
+				finances_product.p_id = property.pro_pif_id
+		WHERE
+			property.pro_type = 1 AND 
+			finances_product.p_id NOT IN ( SELECT property1.pro_pif_id FROM property property1 WHERE property1.pro_type = 1 AND property1.pro_c_id = client.c_id ) 
+		GROUP BY
+			finances_product.p_id
+		HAVING
+			num_of_client > 2
+	)
+ORDER BY
+	client.c_id ASC
+
+/*SELECT DISTINCT
+	client.c_id 
+FROM
+	(
+	SELECT
+		finances_product.p_id AS id,
+		COUNT( property.pro_c_id ) AS num_of_client 
+	FROM
+		finances_product
+		INNER JOIN 
+        property 
+        ON 
+              finances_product.p_id = property.pro_pif_id 
+	WHERE
+		property.pro_type = 1 
+	GROUP BY
+		finances_product.p_id 
+	HAVING
+		num_of_client > 2 
+	) AS tmp,
+	client 
+WHERE
+	NOT EXISTS (
+	SELECT
+		tmp.id 
+	WHERE
+		tmp.id NOT IN ( SELECT property1.pro_pif_id FROM property property1 WHERE property1.pro_type = 1 AND property1.pro_c_id = client.c_id ) 
+	) 
+ORDER BY
+	client.c_id ASC*/
+
+/*  end  of  your code  */
+
+4.4
+跳过
+
+4.5
+跳过
+
+4.6
+跳过
